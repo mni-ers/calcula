@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculatrice Esthétique avec Date et Heure</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .calculator {
+            background-color: #424242;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 340px;
+            padding: 30px;
+            text-align: center;
+            color: #ffffff;
+        }
+        .calculator h1 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 32px;
+        }
+        .datetime {
+            font-size: 14px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+        .result {
+            font-size: 48px;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #212121;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            min-height: 60px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .buttons {
+            display: grid;
+            grid-gap: 10px;
+            grid-template-columns: repeat(4, 1fr);
+        }
+        button {
+            padding: 20px;
+            font-size: 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #757575;
+            color: #ffffff;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        button:hover {
+            background-color: #616161;
+        }
+        button:active {
+            background-color: #424242;
+        }
+        .equal-button {
+            grid-column: span 2;
+            background-color: #ff5722;
+        }
+        .equal-button:hover {
+            background-color: #f44336;
+        }
+        .equal-button:active {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1>Calculatrice</h1>
+        <div class="datetime" id="datetime"></div>
+        <div class="result" id="result">0</div>
+        <div class="buttons">
+            <button onclick="addToExpression('7')">7</button>
+            <button onclick="addToExpression('8')">8</button>
+            <button onclick="addToExpression('9')">9</button>
+            <button onclick="addToExpression('/')">÷</button>
+            <button onclick="addToExpression('4')">4</button>
+            <button onclick="addToExpression('5')">5</button>
+            <button onclick="addToExpression('6')">6</button>
+            <button onclick="addToExpression('*')">x</button>
+            <button onclick="addToExpression('1')">1</button>
+            <button onclick="addToExpression('2')">2</button>
+            <button onclick="addToExpression('3')">3</button>
+            <button onclick="addToExpression('-')">-</button>
+            <button onclick="addToExpression('0')">0</button>
+            <button onclick="addToExpression('.')">.</button>
+            <button onclick="clearExpression()">C</button>
+            <button class="equal-button" onclick="calculate()">=</button>
+            <button onclick="addToExpression('+')">+</button>
+        </div>
+    </div>
+
+    <script>
+        function addToExpression(value) {
+            const resultElement = document.getElementById('result');
+            if (resultElement.innerText === '0' && value !== '.') {
+                resultElement.innerText = '';
+            }
+            resultElement.innerText += value;
+        }
+
+        function clearExpression() {
+            document.getElementById('result').innerText = '0';
+        }
+
+        function calculate() {
+            const expression = document.getElementById('result').innerText;
+            if (!expression) return;
+
+            try {
+                const result = eval(expression);
+                document.getElementById('result').innerText = result;
+            } catch (error) {
+                document.getElementById('result').innerText = 'Erreur';
+            }
+        }
+
+        function updateDateTime() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false };
+            const dateTimeElement = document.getElementById('datetime');
+            dateTimeElement.innerText = now.toLocaleString('fr-FR', options);
+        }
+
+        // Mise à jour de la date et heure toutes les secondes
+        setInterval(updateDateTime, 1000);
+        updateDateTime(); // Appel initial pour afficher immédiatement
+
+    </script>
+</body>
+</html>
